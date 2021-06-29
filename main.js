@@ -28,13 +28,15 @@
 			const data = JSON.parse(require('fs').readFileSync(path))
 			memoryStorage = { ...memoryStorage, ...data }
 		}
-		saveAlltoLocalStorage = function (key, path = filename) {
-			console.log(memoryStorage)
+		saveAlltoLocalStorage = function (path = filename) {
 			require('fs').writeFileSync(path, JSON.stringify(memoryStorage, '', 4), {
 				flag: 'w'
 			})
 			console.log('wrote2file')
 		}
+		try {
+			readAllFromLocalStorage(filename)
+		} catch (e) {}
 		w.store = { ...w.store, readAllFromLocalStorage, saveAlltoLocalStorage }
 	} else {
 		GET = function (key) {
@@ -57,5 +59,5 @@
 			return localStorage.clear()
 		}
 	}
-	w.store = { ...w.store, name: 'localStorage', GET, SET, EACH, DEL, DUMP }
+	w.store = { ...w.store, GET, SET, EACH, DEL, DUMP }
 })(typeof window !== 'undefined' ? window : global, typeof window !== 'undefined')
